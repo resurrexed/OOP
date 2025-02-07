@@ -13,9 +13,8 @@ private:
     int salary;
 
 public:
-    Worker() : name(""), post(""), exp(0), salary(0) {}
     Worker(string userName = "", string userPost = "", int userExp = 0, int userSalary = 0) : name(userName), post(userPost), exp(userExp), salary(userSalary) {}
-    Worker(worker &p) : name(p.name), post(p.post), exp(p.exp), salary(p.salary);
+    Worker(const Worker &p) : name(p.name), post(p.post), exp(p.exp), salary(p.salary) {}
     ~Worker(){};
     void setName(const string& userName) { name = userName; }
     void setPost(const string& userPost) { post = userPost; }
@@ -39,20 +38,21 @@ public:
 int main() {
     srand(time(NULL));
     const int SIZE = 50;
-    vector<Worker> workers(SIZE);
+    vector<Worker> workers;
 
     string names[] = {"Alice", "Bob", "Charlie", "David", "Eve"};
     string posts[] = {"Engineer", "Manager", "Analyst", "Developer", "Designer"};
 
     for (int i = 0; i < SIZE; ++i) 
     {
-        workers[i].setName(names[rand() % 5]);
-        workers[i].setPost(posts[rand() % 5]);
-        workers[i].setExp(rand() % 15 + 1);
-        workers[i].setSalary(rand() % 100 + 1);
-    }
-
-
+		Worker worker;
+        worker.setName(names[rand() % 5]);
+        worker.setPost(posts[rand() % 5]);
+        worker.setExp(rand() % 15 + 1);
+        worker.setSalary(rand() % 100 + 1);
+		workers.push_back(worker);
+    }   
+	
     int exp;
     cout << "Enter experience to filter: ";
     cin >> exp;
