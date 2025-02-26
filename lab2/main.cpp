@@ -4,38 +4,76 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
-class Counter{
-    friend class Observer;
+
+class Worker {
 private:
-    int value=5;
+    string name;
+    string post;
+    int exp;
+    int salary;
 
 public:
-    bool operator == (const Counter& counter) const
+    Worker(string userName = "", string userPost = "", int userExp = 0, int userSalary = 0) : name(userName), post(userPost), exp(userExp), salary(userSalary) {}
+    Worker(const Worker &p) : name(p.name), post(p.post), exp(p.exp), salary(p.salary) {}
+    ~Worker(){};
+    void setName(const string& userName) { name = userName; }
+    void setPost(const string& userPost) { post = userPost; }
+    void setExp(int userExp) { exp = userExp; }
+    void setSalary(int userSalary) { salary = userSalary; }
+
+    string getName() const { return name; }
+    string getPost() const { return post; }
+    int getExp() const { return exp; }
+    int getSalary() const { return salary; }
+
+    void print() const 
     {
-	return value ==counter.value;
+        cout << "Name: " << name << endl
+             << "Post: " << post << endl
+             << "Experience: " << exp << endl
+             << "Salary: " << salary << endl << endl;
     }
-    bool operator != (const Counter& counter) const
+	
+	bool operator == (const Worker& worker) const
     {
-        return value != counter.value;
+        return (name == worker.name &&
+				post == worker.post && 
+				exp == worker.exp && 
+				salary == worker.salary);
     }
-    Counter& operator = (const Counter& counter)
+	
+	bool operator != (const Worker& worker) const
     {
-        value = counter.value;
-        return *this;   // возвращаем ссылку на текущий объект
+        return (name != worker.name ||
+				post != worker.post || 
+				exp != worker.exp || 
+				salary != worker.salary);
     }
-};
-class Observer{
-public:
-    void GetInfo(Counter &data)
+	
+	Worker& operator = (const Worker& worker)
     {
-        cout<<data.value<<endl;
+        name = worker.name;
+		post = worker.post;
+		exp = worker.exp;
+		salary = worker.salary;
+		return *this;
     }
 };
 
-int main()
-{
-    Counter data;
-    Observer obs;
-    obs.GetInfo(data);
-    return 0;	
+int main() {
+	Worker worker1 {};
+	Worker worker2 {"Gleb", "Engineer", 3, 3};
+	
+	cout << (worker1 == worker2) << endl;
+	cout << (worker1 != worker2) << endl;
+	
+	worker1.print();
+	worker2.print();
+	
+	worker1 = worker2;
+	cout << "after" << endl << endl;
+	worker1.print();
+	worker2.print();
+	
+    return 0;
 }
