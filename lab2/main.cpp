@@ -5,7 +5,9 @@
 #include <ctime>
 using namespace std;
 
+
 class Worker {
+friend class Observer;
 private:
     string name;
     string post;
@@ -34,7 +36,7 @@ public:
              << "Salary: " << salary << endl << endl;
     }
 	
-	bool operator == (const Worker& worker) const
+    bool operator == (const Worker& worker) const
     {
         return (name == worker.name &&
 				post == worker.post && 
@@ -42,7 +44,7 @@ public:
 				salary == worker.salary);
     }
 	
-	bool operator != (const Worker& worker) const
+    bool operator != (const Worker& worker) const
     {
         return (name != worker.name ||
 				post != worker.post || 
@@ -50,30 +52,56 @@ public:
 				salary != worker.salary);
     }
 	
-	Worker& operator = (const Worker& worker)
+    Worker& operator = (const Worker& worker)
     {
         name = worker.name;
-		post = worker.post;
-		exp = worker.exp;
-		salary = worker.salary;
-		return *this;
+	post = worker.post;
+	exp = worker.exp;
+	salary = worker.salary;
+    	return *this;
+    }
+    Worker& operator + (Worker& worker) 
+    {
+	name += worker.name;
+	post += worker.post;
+	exp += worker.exp;
+	salary += worker.salary;
+	return *this;
     }
 };
 
+class Observer{
+public:
+    void printName(Worker& worker) {
+	cout << worker.name << endl;
+    }
+
+};
+
+
+
 int main() {
-	Worker worker1 {};
-	Worker worker2 {"Gleb", "Engineer", 3, 3};
-	
-	cout << (worker1 == worker2) << endl;
-	cout << (worker1 != worker2) << endl;
-	
-	worker1.print();
-	worker2.print();
-	
-	worker1 = worker2;
-	cout << "after" << endl << endl;
-	worker1.print();
-	worker2.print();
-	
+    Worker worker1 {};
+    Worker worker2 {"Gleb", "Engineer", 3, 3};
+    
+    cout << (worker1 == worker2) << endl;
+    cout << (worker1 != worker2) << endl;
+    
+    worker1.print();
+    worker2.print();
+    
+    worker1 = worker2;
+    cout << "after" << endl << endl;
+    worker1.print();
+    worker2.print();
+    
+    Observer obs;
+    obs.printName(worker2);
+
+    Worker w3 {"Egor", "Director", 3, 7};
+    Worker w4 {"Kirill", "Junior", 5, 9};
+    Worker w5 {};
+    w5 = w3 + w4;
+    w5.print(); 
     return 0;
 }
